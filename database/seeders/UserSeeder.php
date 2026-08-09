@@ -12,7 +12,6 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         $adminRole       = Role::where('slug', 'admin')->first();
-        $facultyRole     = Role::where('slug', 'faculty')->first();
         $maintenanceRole = Role::where('slug', 'maintenance')->first();
 
         // Admin
@@ -26,26 +25,7 @@ class UserSeeder extends Seeder
             'status'         => 'active',
         ]);
 
-        // Faculty/Staff
-        User::firstOrCreate(['email' => 'faculty@scc.edu.ph'], [
-            'role_id'        => $facultyRole->id,
-            'first_name'     => 'Maria',
-            'last_name'      => 'Santos',
-            'password'       => Hash::make('Faculty@1234'),
-            'department'     => 'College of Education',
-            'contact_number' => '09000000002',
-            'status'         => 'active',
-        ]);
 
-        User::firstOrCreate(['email' => 'faculty2@scc.edu.ph'], [
-            'role_id'        => $facultyRole->id,
-            'first_name'     => 'Juan',
-            'last_name'      => 'Dela Cruz',
-            'password'       => Hash::make('Faculty@1234'),
-            'department'     => 'College of Business',
-            'contact_number' => '09000000003',
-            'status'         => 'active',
-        ]);
 
         // Maintenance Staff
         $maintenanceUsers = [
