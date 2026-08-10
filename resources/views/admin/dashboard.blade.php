@@ -35,23 +35,12 @@
         </a>
     </div>
     <div class="col-6 col-md-3">
-        <a href="{{ route('admin.monitoring.index') }}?status=ongoing" class="text-decoration-none">
+        <a href="{{ route('admin.monitoring.index') }}" class="text-decoration-none">
             <div class="stat-card stat-info" style="cursor:pointer;">
                 <div class="stat-icon"><i class="fas fa-tools"></i></div>
                 <div class="stat-info">
                     <div class="stat-value">{{ $stats['ongoing_tickets'] }}</div>
                     <div class="stat-label">Ongoing</div>
-                </div>
-            </div>
-        </a>
-    </div>
-    <div class="col-6 col-md-3">
-        <a href="{{ route('admin.monitoring.index') }}?status=resolved" class="text-decoration-none">
-            <div class="stat-card stat-warning" style="cursor:pointer;">
-                <div class="stat-icon"><i class="fas fa-clipboard-check"></i></div>
-                <div class="stat-info">
-                    <div class="stat-value">{{ $stats['resolved_tickets'] }}</div>
-                    <div class="stat-label">For Verification</div>
                 </div>
             </div>
         </a>
