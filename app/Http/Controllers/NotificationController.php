@@ -73,24 +73,35 @@ class NotificationController extends Controller
             return route('notifications.index');
         }
 
-        return match ($notification->type) {
-            'new_ticket'       => route('admin.tickets.show', $notification->ticket_id),
-            'ticket_approved'  => $user->isFaculty()
-                                    ? route('faculty.tickets.show', $notification->ticket_id)
-                                    : route('admin.tickets.show', $notification->ticket_id),
-            'ticket_rejected'  => $user->isFaculty()
-                                    ? route('faculty.tickets.show', $notification->ticket_id)
-                                    : route('admin.tickets.show', $notification->ticket_id),
-            'ticket_assigned'  => $user->isMaintenance()
-                                    ? route('maintenance.tasks.show', $notification->ticket_id)
-                                    : route('faculty.tickets.show', $notification->ticket_id),
-            'task_assigned'    => route('maintenance.tasks.show', $notification->ticket_id),
-            'ticket_completed' => $user->isFaculty()
-                                    ? route('faculty.tickets.show', $notification->ticket_id)
-                                    : route('admin.monitoring.show', $notification->ticket_id),
-            'ticket_resolved'  => route('admin.monitoring.show', $notification->ticket_id),
-            default            => route('notifications.index'),
-        };
+        // Load the ticket to check its CURRENT status
+        $ticket = \App\Models\Ticket::find($notification->ticket_id);
+
+        if (!$ticket) {
+            return route('notifications.index');
+        }
+
+        // Route based on current ticket status — not notification type
+        if ($user->isAdmin()) {
+            return match (true) {
+                in_array($ticket->status, ['completed', 'rejected'])         => route('admin.history'),
+                in_array($ticket->status, ['assigned', 'ongoing', 'resolved']) => route('admin.monitoring.show', $ticket->id),
+                default                                                       => route('admin.tickets.show', $ticket->id),
+            };
+        }
+
+        if ($user->isFaculty()) {
+            return in_array($ticket->status, ['completed', 'rejected'])
+                ? route('faculty.history')
+                : route('faculty.tickets.show', $ticket->id);
+        }
+
+        if ($user->isMaintenance()) {
+            return in_array($ticket->status, ['completed', 'rejected'])
+                ? route('maintenance.tasks.completed')
+                : route('maintenance.tasks.show', $ticket->id);
+        }
+
+        return route('notifications.index');
     }
 
     // ─── Mark Single as Read ──────────────────────────────────────────────────
