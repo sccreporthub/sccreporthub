@@ -148,25 +148,42 @@
                 </button>
                 <!-- Notification Bell -->
                 <div class="dropdown">
-                    <button class="btn btn-link text-dark position-relative" data-bs-toggle="dropdown">
+                    <button class="btn btn-link text-dark position-relative p-2" data-bs-toggle="dropdown" aria-label="Notifications">
                         <i class="fas fa-bell fa-lg"></i>
                         @if(($unreadNotificationCount ?? 0) > 0)
-                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" id="notif-badge">
-                                {{ $unreadNotificationCount }}
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" id="notif-badge" style="font-size:0.65rem; min-width:18px;">
+                                {{ $unreadNotificationCount > 99 ? '99+' : $unreadNotificationCount }}
                             </span>
                         @endif
                     </button>
-                    <div class="dropdown-menu dropdown-menu-end notification-dropdown p-0" style="width:min(360px, calc(100vw - 24px))">
-                        <div class="dropdown-header d-flex justify-content-between align-items-center px-3 py-2 border-bottom">
-                            <strong>Notifications</strong>
-                            <a href="{{ route('notifications.mark-all-read') }}" class="text-muted small" onclick="event.preventDefault(); document.getElementById('mark-all-form').submit();">Mark all read</a>
-                            <form id="mark-all-form" method="POST" action="{{ route('notifications.mark-all-read') }}" class="d-none">@csrf</form>
+                    <div class="dropdown-menu dropdown-menu-end p-0 shadow-lg border-0" id="notif-dropdown" style="width:340px; border-radius:12px; overflow:hidden;">
+                        {{-- Header --}}
+                        <div class="d-flex align-items-center justify-content-between px-3 py-2 border-bottom" style="background:#f8fafc;">
+                            <div class="d-flex align-items-center gap-2">
+                                <i class="fas fa-bell text-primary" style="font-size:0.85rem;"></i>
+                                <span class="fw-semibold" style="font-size:0.9rem;">Notifications</span>
+                                @if(($unreadNotificationCount ?? 0) > 0)
+                                <span class="badge bg-primary rounded-pill" style="font-size:0.7rem;">{{ $unreadNotificationCount }}</span>
+                                @endif
+                            </div>
+                            <form id="mark-all-form" method="POST" action="{{ route('notifications.mark-all-read') }}" class="d-inline">
+                                @csrf
+                                <button type="submit" class="btn btn-link text-muted p-0" style="font-size:0.75rem; text-decoration:none;">
+                                    <i class="fas fa-check-double me-1"></i>Mark all read
+                                </button>
+                            </form>
                         </div>
-                        <div id="notification-list" style="max-height:300px; overflow-y:auto;">
-                            <div class="text-center py-3 text-muted small">Loading...</div>
+                        {{-- List --}}
+                        <div id="notification-list" style="max-height:360px; overflow-y:auto;">
+                            <div class="text-center py-4 text-muted small">
+                                <i class="fas fa-spinner fa-spin me-1"></i> Loading...
+                            </div>
                         </div>
-                        <div class="dropdown-footer text-center border-top py-2">
-                            <a href="{{ route('notifications.index') }}" class="text-primary small">View all notifications</a>
+                        {{-- Footer --}}
+                        <div class="text-center border-top py-2" style="background:#f8fafc;">
+                            <a href="{{ route('notifications.index') }}" class="text-primary fw-semibold" style="font-size:0.8rem; text-decoration:none;">
+                                View all notifications <i class="fas fa-arrow-right ms-1 fa-xs"></i>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -235,7 +252,6 @@
 <script src="{{ asset('js/app.js') }}"></script>
 
 <script>
-// Load notifications dropdown
 document.addEventListener('DOMContentLoaded', function () {
     const bellBtn = document.querySelector('[data-bs-toggle="dropdown"]');
     if (bellBtn) {
@@ -243,31 +259,64 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 });
 
+// Icon map per notification type
+const notifIcons = {
+    new_ticket:       { icon: 'fa-ticket-alt',      bg: '#eef2ff', color: '#4f46e5' },
+    ticket_approved:  { icon: 'fa-check-circle',    bg: '#f0fdf4', color: '#16a34a' },
+    ticket_rejected:  { icon: 'fa-times-circle',    bg: '#fef2f2', color: '#dc2626' },
+    ticket_assigned:  { icon: 'fa-user-plus',       bg: '#eff6ff', color: '#2563eb' },
+    task_assigned:    { icon: 'fa-hard-hat',         bg: '#fffbeb', color: '#d97706' },
+    ticket_completed: { icon: 'fa-star',             bg: '#fefce8', color: '#ca8a04' },
+    ticket_resolved:  { icon: 'fa-check-double',    bg: '#f0fdf4', color: '#16a34a' },
+};
+
+function getNotifMeta(type) {
+    return notifIcons[type] || { icon: 'fa-bell', bg: '#f1f5f9', color: '#64748b' };
+}
+
+// Truncate message to fit nicely
+function truncate(str, len = 60) {
+    return str.length > len ? str.slice(0, len) + '…' : str;
+}
+
 function loadNotifications() {
     fetch('{{ route("notifications.recent") }}')
         .then(r => r.json())
         .then(data => {
             const list = document.getElementById('notification-list');
             if (!data.length) {
-                list.innerHTML = '<div class="text-center py-3 text-muted small">No notifications</div>';
+                list.innerHTML = `
+                    <div class="text-center py-5 text-muted">
+                        <i class="fas fa-bell-slash fa-2x mb-2 d-block opacity-25"></i>
+                        <span style="font-size:0.82rem;">No notifications yet</span>
+                    </div>`;
                 return;
             }
-            list.innerHTML = data.map(n => `
-                <a href="${n.url}"
-                   class="dropdown-item py-2 px-3 border-bottom notif-item ${n.is_read ? '' : 'bg-light'}"
-                   data-id="${n.id}"
-                   data-read="${n.is_read}">
-                    <div class="d-flex align-items-start gap-2">
-                        ${!n.is_read ? '<span class="mt-1 flex-shrink-0" style="width:8px;height:8px;border-radius:50%;background:#4f46e5;display:inline-block;"></span>' : '<span style="width:8px;display:inline-block;"></span>'}
-                        <div>
-                            <div class="small fw-semibold">${n.message}</div>
-                            <div class="text-muted" style="font-size:0.75rem;">${n.created_at}</div>
-                        </div>
-                    </div>
-                </a>
-            `).join('');
 
-            // Attach click handler to mark as read before navigating
+            list.innerHTML = data.map(n => {
+                const meta = getNotifMeta(n.type);
+                return `
+                <a href="${n.url}"
+                   class="notif-item d-flex align-items-start gap-3 px-3 py-2 border-bottom text-decoration-none"
+                   data-id="${n.id}"
+                   data-read="${n.is_read}"
+                   style="background:${n.is_read ? '#fff' : '#f5f7ff'}; transition:background 0.15s;">
+                    <div class="flex-shrink-0 d-flex align-items-center justify-content-center rounded-circle"
+                         style="width:36px;height:36px;background:${meta.bg};margin-top:2px;">
+                        <i class="fas ${meta.icon}" style="color:${meta.color};font-size:0.85rem;"></i>
+                    </div>
+                    <div class="flex-grow-1 overflow-hidden">
+                        <div class="${n.is_read ? 'text-muted' : 'fw-semibold text-dark'}"
+                             style="font-size:0.8rem; line-height:1.4; white-space:normal; word-break:break-word;">
+                            ${truncate(n.message, 75)}
+                        </div>
+                        <div class="text-muted mt-1" style="font-size:0.72rem;">${n.created_at}</div>
+                    </div>
+                    ${!n.is_read ? '<span class="flex-shrink-0 mt-2" style="width:8px;height:8px;border-radius:50%;background:#4f46e5;display:inline-block;"></span>' : ''}
+                </a>`;
+            }).join('');
+
+            // Mark as read on click
             document.querySelectorAll('.notif-item').forEach(item => {
                 item.addEventListener('click', function (e) {
                     const id   = this.dataset.id;
@@ -298,15 +347,16 @@ function updateNotifBadge() {
     .then(r => r.json())
     .then(data => {
         let badge = document.getElementById('notif-badge');
-        if (data.count > 0) {
+        const count = data.count;
+        if (count > 0) {
             if (!badge) {
-                // Create badge if it doesn't exist yet
                 badge = document.createElement('span');
                 badge.id = 'notif-badge';
                 badge.className = 'position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger';
+                badge.style.cssText = 'font-size:0.65rem;min-width:18px;';
                 document.querySelector('.fa-bell')?.closest('button')?.appendChild(badge);
             }
-            badge.textContent = data.count;
+            badge.textContent = count > 99 ? '99+' : count;
             badge.style.display = '';
         } else {
             if (badge) badge.style.display = 'none';
@@ -315,7 +365,7 @@ function updateNotifBadge() {
     .catch(() => {});
 }
 
-// Poll every 30 seconds to keep badge in sync
+// Poll every 30 seconds
 setInterval(updateNotifBadge, 30000);
 </script>
 
