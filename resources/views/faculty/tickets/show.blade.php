@@ -177,7 +177,7 @@
         </div>
 
         {{-- Feedback Section --}}
-        @if($ticket->status === Ticket::STATUS_COMPLETED)
+        @if($ticket->status === 'completed')
             @if($ticket->feedback)
             <div class="card shadow-sm border-0">
                 <div class="card-header bg-white fw-semibold">
