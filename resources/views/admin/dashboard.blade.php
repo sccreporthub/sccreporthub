@@ -18,7 +18,7 @@
                 <div class="stat-icon"><i class="fas fa-ticket-alt"></i></div>
                 <div class="stat-info">
                     <div class="stat-value">{{ $stats['total_tickets'] }}</div>
-                    <div class="stat-label">Total Tickets</div>
+                    <div class="stat-label">Active Tickets</div>
                 </div>
             </div>
         </a>
