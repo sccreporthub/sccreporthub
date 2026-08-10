@@ -20,7 +20,8 @@ class AdminController extends Controller
         $query = Ticket::with(['user', 'facility', 'assignedStaff']);
 
         if ($request->filled('all')) {
-            // No status filter — show everything
+            // Active tickets only — matches the dashboard Active Tickets count
+            $query->whereNotIn('status', ['completed', 'rejected']);
         } elseif ($request->filled('status')) {
             $query->where('status', $request->status);
         } else {
