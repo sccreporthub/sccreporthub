@@ -158,10 +158,10 @@
                     </button>
                     <div class="dropdown-menu dropdown-menu-end p-0 shadow-lg border-0" id="notif-dropdown" style="width:340px; border-radius:12px; overflow:hidden;">
                         {{-- Header --}}
-                        <div class="d-flex align-items-center justify-content-between px-3 py-2 border-bottom" style="background:#f8fafc;">
+                        <div class="d-flex align-items-center justify-content-between px-3 py-2 border-bottom notif-header">
                             <div class="d-flex align-items-center gap-2">
                                 <i class="fas fa-bell text-primary" style="font-size:0.85rem;"></i>
-                                <span class="fw-semibold" style="font-size:0.9rem;">Notifications</span>
+                                <span class="fw-semibold notif-title" style="font-size:0.9rem;">Notifications</span>
                                 @if(($unreadNotificationCount ?? 0) > 0)
                                 <span class="badge bg-primary rounded-pill" style="font-size:0.7rem;">{{ $unreadNotificationCount }}</span>
                                 @endif
@@ -180,8 +180,8 @@
                             </div>
                         </div>
                         {{-- Footer --}}
-                        <div class="text-center border-top py-2" style="background:#f8fafc;">
-                            <a href="{{ route('notifications.index') }}" class="text-primary fw-semibold" style="font-size:0.8rem; text-decoration:none;">
+                        <div class="text-center border-top py-2 notif-footer">
+                            <a href="{{ route('notifications.index') }}" class="text-primary fw-semibold notif-footer-link" style="font-size:0.8rem; text-decoration:none;">
                                 View all notifications <i class="fas fa-arrow-right ms-1 fa-xs"></i>
                             </a>
                         </div>
@@ -297,20 +297,19 @@ function loadNotifications() {
                 const meta = getNotifMeta(n.type);
                 return `
                 <a href="${n.url}"
-                   class="notif-item d-flex align-items-start gap-3 px-3 py-2 border-bottom text-decoration-none"
+                   class="notif-item d-flex align-items-start gap-3 px-3 py-2 border-bottom text-decoration-none ${n.is_read ? '' : 'notif-unread'}"
                    data-id="${n.id}"
-                   data-read="${n.is_read}"
-                   style="background:${n.is_read ? '#fff' : '#f5f7ff'}; transition:background 0.15s;">
+                   data-read="${n.is_read}">
                     <div class="flex-shrink-0 d-flex align-items-center justify-content-center rounded-circle"
                          style="width:36px;height:36px;background:${meta.bg};margin-top:2px;">
                         <i class="fas ${meta.icon}" style="color:${meta.color};font-size:0.85rem;"></i>
                     </div>
                     <div class="flex-grow-1 overflow-hidden">
-                        <div class="${n.is_read ? 'text-muted' : 'fw-semibold text-dark'}"
+                        <div class="notif-message ${n.is_read ? 'text-muted' : 'fw-semibold'}"
                              style="font-size:0.8rem; line-height:1.4; white-space:normal; word-break:break-word;">
                             ${truncate(n.message, 75)}
                         </div>
-                        <div class="text-muted mt-1" style="font-size:0.72rem;">${n.created_at}</div>
+                        <div class="notif-time mt-1" style="font-size:0.72rem;">${n.created_at}</div>
                     </div>
                     ${!n.is_read ? '<span class="flex-shrink-0 mt-2" style="width:8px;height:8px;border-radius:50%;background:#4f46e5;display:inline-block;"></span>' : ''}
                 </a>`;
