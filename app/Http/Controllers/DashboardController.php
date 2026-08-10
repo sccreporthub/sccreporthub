@@ -18,6 +18,7 @@ class DashboardController extends Controller
             'total_tickets'     => Ticket::whereNotIn('status', ['completed', 'rejected'])->count(),
             'pending_tickets'   => Ticket::where('status', 'pending')->count(),
             'ongoing_tickets'   => Ticket::whereIn('status', ['assigned', 'ongoing'])->count(),
+            'resolved_tickets'  => Ticket::where('status', 'resolved')->count(),
             'completed_tickets' => Ticket::where('status', 'completed')->count(),
             'total_users'       => User::whereHas('role', fn($q) => $q->where('slug', 'faculty'))->count(),
             'maintenance_staff' => User::whereHas('role', fn($q) => $q->where('slug', 'maintenance'))->count(),
