@@ -143,26 +143,6 @@
             </div>
         </div>
         @endif
-
-        <!-- Feedback -->
-        @if($ticket->feedback)
-        <div class="card shadow-sm">
-            <div class="card-header bg-white fw-semibold">
-                <i class="fas fa-star me-2 text-warning"></i>User Feedback
-            </div>
-            <div class="card-body">
-                <div class="d-flex align-items-center gap-2 mb-2">
-                    @for($i = 1; $i <= 5; $i++)
-                        <i class="fas fa-star {{ $i <= $ticket->feedback->rating ? 'text-warning' : 'text-muted' }}"></i>
-                    @endfor
-                    <span class="fw-semibold">{{ $ticket->feedback->rating }}/5</span>
-                </div>
-                @if($ticket->feedback->comment)
-                <p class="mb-0 text-muted">{{ $ticket->feedback->comment }}</p>
-                @endif
-            </div>
-        </div>
-        @endif
     </div>
 
     <!-- Right Column: Actions -->

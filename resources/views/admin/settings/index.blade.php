@@ -5,7 +5,7 @@
 <div class="page-header mb-4">
     <div>
         <h4 class="fw-bold mb-0"><i class="fas fa-gear me-2 text-primary"></i>Settings</h4>
-        <p class="text-muted small mb-0">Manage your profile, security, and feedback</p>
+        <p class="text-muted small mb-0">Manage your profile and security settings</p>
     </div>
 </div>
 
@@ -46,23 +46,6 @@
         </a>
     </div>
 
-    <!-- Feedback -->
-    <div class="col-12 col-md-4">
-        <a href="{{ route('admin.feedback') }}" class="text-decoration-none">
-            <div class="card shadow-sm h-100 settings-card">
-                <div class="card-body text-center p-4">
-                    <div class="settings-icon mb-3" style="background: linear-gradient(135deg, #f59e0b, #fbbf24);">
-                        <i class="fas fa-star"></i>
-                    </div>
-                    <h5 class="fw-bold mb-1">Feedback</h5>
-                    <p class="text-muted small mb-0">View user ratings and feedback on completed maintenance requests</p>
-                </div>
-                <div class="card-footer bg-transparent border-top text-center py-2">
-                    <span class="text-primary small fw-semibold">View Feedback <i class="fas fa-arrow-right ms-1 fa-xs"></i></span>
-                </div>
-            </div>
-        </a>
-    </div>
 </div>
 @endsection
 

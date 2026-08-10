@@ -3,7 +3,6 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\MaintenanceController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\TicketController;
@@ -96,9 +95,8 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
         Route::delete('/{facility}',             [AdminController::class, 'destroyFacility'])->name('destroy');
     });
 
-    // History & Feedback
+    // History
     Route::get('/history',  [AdminController::class, 'historyLogs'])->name('history');
-    Route::get('/feedback', [FeedbackController::class, 'adminIndex'])->name('feedback');
     Route::get('/settings', [AdminController::class, 'settings'])->name('settings');
 
     // Maintenance Monitoring
@@ -124,10 +122,6 @@ Route::middleware(['auth', 'faculty'])->prefix('faculty')->name('faculty.')->gro
     });
 
     Route::get('/history', [TicketController::class, 'history'])->name('history');
-
-    // Feedback
-    Route::get('/tickets/{ticket}/feedback',  [FeedbackController::class, 'create'])->name('feedback.create');
-    Route::post('/tickets/{ticket}/feedback', [FeedbackController::class, 'store'])->name('feedback.store');
 });
 
 // ─── Maintenance Staff Routes ─────────────────────────────────────────────────

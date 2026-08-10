@@ -52,7 +52,7 @@ class AdminController extends Controller
 
     public function showTicket(Ticket $ticket)
     {
-        $ticket->load(['user', 'facility', 'assignedStaff', 'maintenanceLogs.maintenanceStaff', 'feedback', 'approvedBy']);
+        $ticket->load(['user', 'facility', 'assignedStaff', 'maintenanceLogs.maintenanceStaff', 'approvedBy']);
 
         $maintenanceStaff = User::whereHas('role', fn($q) => $q->where('slug', 'maintenance'))
             ->where('status', 'active')
@@ -169,7 +169,7 @@ class AdminController extends Controller
         Notification::create([
             'user_id'   => $ticket->user_id,
             'ticket_id' => $ticket->id,
-            'message'   => "Your ticket #{$ticket->ticket_number} has been verified and marked as completed. Please submit your feedback.",
+            'message'   => "Your ticket #{$ticket->ticket_number} has been verified and marked as completed.",
             'type'      => 'ticket_completed',
             'is_read'   => false,
         ]);
@@ -218,7 +218,7 @@ class AdminController extends Controller
 
     public function monitoringShow(Ticket $ticket)
     {
-        $ticket->load(['user', 'facility', 'assignedStaff', 'maintenanceLogs.maintenanceStaff', 'feedback', 'approvedBy']);
+        $ticket->load(['user', 'facility', 'assignedStaff', 'maintenanceLogs.maintenanceStaff', 'approvedBy']);
         return view('admin.monitoring.show', compact('ticket'));
     }
     // ─── Settings Hub ─────────────────────────────────────────────────────────

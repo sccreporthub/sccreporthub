@@ -47,11 +47,6 @@
                                 <a href="{{ route('faculty.tickets.show', $ticket) }}" class="btn btn-sm btn-outline-primary" title="View">
                                     <i class="fas fa-eye"></i>
                                 </a>
-                                @if($ticket->status === 'completed' && !$ticket->feedback)
-                                <a href="{{ route('faculty.feedback.create', $ticket) }}" class="btn btn-sm btn-outline-warning" title="Submit Feedback">
-                                    <i class="fas fa-star"></i>
-                                </a>
-                                @endif
                             </div>
                         </td>
                     </tr>

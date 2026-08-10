@@ -62,7 +62,7 @@
                 <li class="nav-item {{ request()->routeIs('admin.users.*') ? 'active' : '' }}">
                     <a href="{{ route('admin.users.index') }}"><i class="fas fa-users"></i> User Management</a>
                 </li>
-                <li class="nav-item {{ request()->routeIs('admin.history') || request()->routeIs('admin.feedback') || request()->get('from') === 'history' ? 'active' : '' }}">
+                <li class="nav-item {{ request()->routeIs('admin.history') || request()->get('from') === 'history' ? 'active' : '' }}">
                     <a href="{{ route('admin.history') }}"><i class="fas fa-clock-rotate-left"></i> History</a>
                 </li>
                 <li class="nav-item {{ request()->routeIs('admin.facilities.*') ? 'active' : '' }}">
@@ -72,7 +72,7 @@
                 <li class="nav-divider"></li>
 
                 {{-- Settings as dedicated page --}}
-                <li class="nav-item {{ request()->routeIs('admin.settings') || request()->routeIs('profile.*') || request()->routeIs('password.*') || request()->routeIs('admin.feedback') ? 'active' : '' }}">
+                <li class="nav-item {{ request()->routeIs('admin.settings') || request()->routeIs('profile.*') || request()->routeIs('password.*') ? 'active' : '' }}">
                     <a href="{{ route('admin.settings') }}"><i class="fas fa-gear"></i> Settings</a>
                 </li>
 

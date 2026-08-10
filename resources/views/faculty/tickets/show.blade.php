@@ -148,35 +148,6 @@
 
     <!-- Right: Actions -->
     <div class="col-md-4">
-        @if($ticket->status === 'completed' && !$ticket->feedback)
-        <div class="card shadow-sm border-warning mb-4">
-            <div class="card-body text-center p-4">
-                <i class="fas fa-star fa-3x text-warning mb-3"></i>
-                <h6 class="fw-semibold">Your repair is complete!</h6>
-                <p class="text-muted small">Please take a moment to rate the service.</p>
-                <a href="{{ route('faculty.feedback.create', $ticket) }}" class="btn btn-warning w-100">
-                    <i class="fas fa-star me-2"></i>Submit Feedback
-                </a>
-            </div>
-        </div>
-        @endif
-
-        @if($ticket->feedback)
-        <div class="card shadow-sm mb-4">
-            <div class="card-header bg-white fw-semibold"><i class="fas fa-star me-2 text-warning"></i>Your Feedback</div>
-            <div class="card-body">
-                <div class="d-flex gap-1 mb-2">
-                    @for($i = 1; $i <= 5; $i++)
-                        <i class="fas fa-star {{ $i <= $ticket->feedback->rating ? 'text-warning' : 'text-muted' }}"></i>
-                    @endfor
-                </div>
-                @if($ticket->feedback->comment)
-                <p class="text-muted small mb-0">{{ $ticket->feedback->comment }}</p>
-                @endif
-            </div>
-        </div>
-        @endif
-
         <div class="card shadow-sm">
             <div class="card-header bg-white fw-semibold"><i class="fas fa-info-circle me-2 text-primary"></i>Ticket Summary</div>
             <div class="card-body">

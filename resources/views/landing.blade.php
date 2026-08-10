@@ -538,7 +538,7 @@
                     <ul class="role-list">
                         <li><i class="fas fa-check-circle"></i> Submit facility issue tickets</li>
                         <li><i class="fas fa-check-circle"></i> Monitor request progress</li>
-                        <li><i class="fas fa-check-circle"></i> Provide feedback on resolutions</li>
+                        <li><i class="fas fa-check-circle"></i> View history of completed requests</li>
                     </ul>
                 </div>
             </div>

@@ -28,21 +28,7 @@
             </div>
             <div class="d-flex flex-column align-items-end gap-1 flex-shrink-0">
                 <span class="badge bg-{{ $ticket->status_badge }} text-capitalize">{{ $ticket->status }}</span>
-                @if($ticket->feedback)
-                <div>
-                    @for($i = 1; $i <= 5; $i++)
-                        <i class="fas fa-star {{ $i <= $ticket->feedback->rating ? 'text-warning' : 'text-muted' }}"
-                           style="font-size:0.65rem;"></i>
-                    @endfor
-                </div>
-                @elseif($ticket->status === 'completed')
-                <a href="{{ route('faculty.feedback.create', $ticket) }}"
-                   class="badge bg-warning text-dark text-decoration-none"
-                   onclick="event.stopPropagation();"
-                   style="font-size:0.68rem;">
-                    Rate now
-                </a>
-                @endif
+
             </div>
         </div>
     </a>
