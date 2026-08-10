@@ -62,7 +62,7 @@ class DashboardController extends Controller
         $user = Auth::user();
 
         $stats = [
-            'total_tickets'     => Ticket::where('user_id', $user->id)->count(),
+            'total_tickets'     => Ticket::where('user_id', $user->id)->whereNotIn('status', ['completed', 'rejected'])->count(),
             'pending_tickets'   => Ticket::where('user_id', $user->id)->where('status', 'pending')->count(),
             'ongoing_tickets'   => Ticket::where('user_id', $user->id)->whereIn('status', ['assigned', 'ongoing'])->count(),
             'completed_tickets' => Ticket::where('user_id', $user->id)->where('status', 'completed')->count(),

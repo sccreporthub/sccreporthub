@@ -20,7 +20,7 @@
                 <div class="stat-icon"><i class="fas fa-clipboard-list"></i></div>
                 <div class="stat-info">
                     <div class="stat-value">{{ $stats['total_tickets'] }}</div>
-                    <div class="stat-label">Total</div>
+                    <div class="stat-label">Active</div>
                 </div>
             </div>
         </a>
