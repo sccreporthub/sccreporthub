@@ -15,14 +15,19 @@ class AdminController extends Controller
 
     public function tickets(Request $request)
     {
-        // Ticket Request Management: pending and approved only
-        // assigned/ongoing/resolved are handled in Maintenance Monitoring
-        $query = Ticket::with(['user', 'facility', 'assignedStaff'])
-            ->whereIn('status', ['pending', 'approved']);
+        // Default: pending and approved only
+        // If 'all' is passed, show all statuses
+        $query = Ticket::with(['user', 'facility', 'assignedStaff']);
 
-        if ($request->filled('status')) {
+        if ($request->filled('all')) {
+            // No status filter — show everything
+        } elseif ($request->filled('status')) {
             $query->where('status', $request->status);
+        } else {
+            // Default view: pending and approved
+            $query->whereIn('status', ['pending', 'approved']);
         }
+
         if ($request->filled('priority')) {
             $query->where('priority_level', $request->priority);
         }

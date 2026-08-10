@@ -13,7 +13,7 @@
 <!-- ─── Stats Cards ─────────────────────────────────────────────────────────── -->
 <div class="row g-3 mb-4">
     <div class="col-6 col-md-3">
-        <a href="{{ route('admin.tickets.index') }}" class="text-decoration-none">
+        <a href="{{ route('admin.tickets.index') }}?all=1" class="text-decoration-none">
             <div class="stat-card stat-primary" style="cursor:pointer;">
                 <div class="stat-icon"><i class="fas fa-ticket-alt"></i></div>
                 <div class="stat-info">
@@ -46,7 +46,7 @@
         </a>
     </div>
     <div class="col-6 col-md-3">
-        <a href="{{ route('admin.history') }}" class="text-decoration-none">
+        <a href="{{ route('admin.history') }}?status=completed" class="text-decoration-none">
             <div class="stat-card stat-success" style="cursor:pointer;">
                 <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
                 <div class="stat-info">
@@ -57,7 +57,7 @@
         </a>
     </div>
     <div class="col-6 col-md-3">
-        <a href="{{ route('admin.tickets.index') }}?priority=urgent" class="text-decoration-none">
+        <a href="{{ route('admin.tickets.index') }}?all=1&priority=urgent" class="text-decoration-none">
             <div class="stat-card stat-danger" style="cursor:pointer;">
                 <div class="stat-icon"><i class="fas fa-exclamation-triangle"></i></div>
                 <div class="stat-info">
@@ -68,7 +68,7 @@
         </a>
     </div>
     <div class="col-6 col-md-3">
-        <a href="{{ route('admin.history') }}" class="text-decoration-none">
+        <a href="{{ route('admin.history') }}?status=rejected" class="text-decoration-none">
             <div class="stat-card stat-secondary" style="cursor:pointer;">
                 <div class="stat-icon"><i class="fas fa-times-circle"></i></div>
                 <div class="stat-info">
