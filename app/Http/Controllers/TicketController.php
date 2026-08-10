@@ -28,13 +28,18 @@ class TicketController extends Controller
 
     // ─── Faculty: List My Tickets ─────────────────────────────────────────────
 
-    public function index()
+    public function index(Request $request)
     {
-        $tickets = Ticket::where('user_id', Auth::id())
-            ->whereNotIn('status', ['completed', 'rejected'])
-            ->with(['facility', 'assignedStaff'])
-            ->latest()
-            ->paginate(10);
+        $query = Ticket::where('user_id', Auth::id())
+            ->with(['facility', 'assignedStaff']);
+
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        } else {
+            $query->whereNotIn('status', ['completed', 'rejected']);
+        }
+
+        $tickets = $query->latest()->paginate(10);
 
         return view('faculty.tickets.index', compact('tickets'));
     }

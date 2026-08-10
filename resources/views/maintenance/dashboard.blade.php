@@ -41,7 +41,7 @@
         </a>
     </div>
     <div class="col-6 col-md-3">
-        <a href="{{ route('maintenance.tasks.completed') }}" class="text-decoration-none">
+        <a href="{{ route('maintenance.tasks.completed') }}?status=resolved" class="text-decoration-none">
             <div class="stat-card stat-info" style="cursor:pointer;">
                 <div class="stat-icon"><i class="fas fa-check"></i></div>
                 <div class="stat-info">
@@ -52,7 +52,7 @@
         </a>
     </div>
     <div class="col-6 col-md-3">
-        <a href="{{ route('maintenance.tasks.completed') }}" class="text-decoration-none">
+        <a href="{{ route('maintenance.tasks.completed') }}?status=completed" class="text-decoration-none">
             <div class="stat-card stat-success" style="cursor:pointer;">
                 <div class="stat-icon"><i class="fas fa-check-double"></i></div>
                 <div class="stat-info">

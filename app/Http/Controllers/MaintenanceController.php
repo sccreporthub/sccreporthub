@@ -170,13 +170,19 @@ class MaintenanceController extends Controller
 
     // ─── Completed Task History ───────────────────────────────────────────────
 
-    public function completedTasks()
+    public function completedTasks(Request $request)
     {
-        $tickets = Ticket::where('assigned_to', Auth::id())
-            ->whereIn('status', ['resolved', 'completed'])
+        $query = Ticket::where('assigned_to', Auth::id())
             ->with(['user', 'facility', 'maintenanceLogs'])
-            ->latest()
-            ->paginate(10);
+            ->latest();
+
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        } else {
+            $query->whereIn('status', ['resolved', 'completed']);
+        }
+
+        $tickets = $query->paginate(10);
 
         return view('maintenance.tasks.completed', compact('tickets'));
     }

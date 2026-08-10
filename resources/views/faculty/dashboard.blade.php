@@ -26,7 +26,7 @@
         </a>
     </div>
     <div class="col-6">
-        <a href="{{ route('faculty.tickets.index') }}" class="text-decoration-none">
+        <a href="{{ route('faculty.tickets.index') }}?status=pending" class="text-decoration-none">
             <div class="stat-card stat-warning" style="cursor:pointer;">
                 <div class="stat-icon"><i class="fas fa-clock"></i></div>
                 <div class="stat-info">
@@ -37,7 +37,7 @@
         </a>
     </div>
     <div class="col-6">
-        <a href="{{ route('faculty.tickets.index') }}" class="text-decoration-none">
+        <a href="{{ route('faculty.tickets.index') }}?status=ongoing" class="text-decoration-none">
             <div class="stat-card stat-info" style="cursor:pointer;">
                 <div class="stat-icon"><i class="fas fa-screwdriver-wrench"></i></div>
                 <div class="stat-info">
