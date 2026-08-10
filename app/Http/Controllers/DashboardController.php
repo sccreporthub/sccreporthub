@@ -15,7 +15,7 @@ class DashboardController extends Controller
     public function adminDashboard()
     {
         $stats = [
-            'total_tickets'     => Ticket::count(),
+            'total_tickets'     => Ticket::whereNotIn('status', ['completed', 'rejected'])->count(),
             'pending_tickets'   => Ticket::where('status', 'pending')->count(),
             'ongoing_tickets'   => Ticket::whereIn('status', ['assigned', 'ongoing'])->count(),
             'completed_tickets' => Ticket::where('status', 'completed')->count(),
