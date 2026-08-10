@@ -51,9 +51,40 @@ class NotificationController extends Controller
                 'type'       => $n->type,
                 'ticket_id'  => $n->ticket_id,
                 'created_at' => $n->created_at->diffForHumans(),
+                'url'        => $this->resolveNotificationUrl($n),
             ]);
 
         return response()->json($notifications);
+    }
+
+    // ─── Resolve Notification URL by Type ────────────────────────────────────
+
+    private function resolveNotificationUrl(Notification $notification): string
+    {
+        $user = Auth::user();
+
+        if (!$notification->ticket_id) {
+            return route('notifications.index');
+        }
+
+        return match ($notification->type) {
+            'new_ticket'       => route('admin.tickets.show', $notification->ticket_id),
+            'ticket_approved'  => $user->isFaculty()
+                                    ? route('faculty.tickets.show', $notification->ticket_id)
+                                    : route('admin.tickets.show', $notification->ticket_id),
+            'ticket_rejected'  => $user->isFaculty()
+                                    ? route('faculty.tickets.show', $notification->ticket_id)
+                                    : route('admin.tickets.show', $notification->ticket_id),
+            'ticket_assigned'  => $user->isMaintenance()
+                                    ? route('maintenance.tasks.show', $notification->ticket_id)
+                                    : route('faculty.tickets.show', $notification->ticket_id),
+            'task_assigned'    => route('maintenance.tasks.show', $notification->ticket_id),
+            'ticket_completed' => $user->isFaculty()
+                                    ? route('faculty.tickets.show', $notification->ticket_id)
+                                    : route('admin.monitoring.show', $notification->ticket_id),
+            'ticket_resolved'  => route('admin.monitoring.show', $notification->ticket_id),
+            default            => route('notifications.index'),
+        };
     }
 
     // ─── Mark Single as Read ──────────────────────────────────────────────────

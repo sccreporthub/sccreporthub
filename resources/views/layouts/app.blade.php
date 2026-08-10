@@ -237,9 +237,9 @@
 <script>
 // Load notifications dropdown
 document.addEventListener('DOMContentLoaded', function () {
-    const notifDropdown = document.querySelector('.notification-dropdown');
-    if (notifDropdown) {
-        document.querySelector('[data-bs-toggle="dropdown"]')?.addEventListener('show.bs.dropdown', loadNotifications);
+    const bellBtn = document.querySelector('[data-bs-toggle="dropdown"]');
+    if (bellBtn) {
+        bellBtn.addEventListener('show.bs.dropdown', loadNotifications);
     }
 });
 
@@ -253,13 +253,70 @@ function loadNotifications() {
                 return;
             }
             list.innerHTML = data.map(n => `
-                <a href="{{ route('notifications.index') }}" class="dropdown-item py-2 px-3 border-bottom ${n.is_read ? '' : 'bg-light'}">
-                    <div class="small fw-semibold">${n.message}</div>
-                    <div class="text-muted" style="font-size:0.75rem;">${n.created_at}</div>
+                <a href="${n.url}"
+                   class="dropdown-item py-2 px-3 border-bottom notif-item ${n.is_read ? '' : 'bg-light'}"
+                   data-id="${n.id}"
+                   data-read="${n.is_read}">
+                    <div class="d-flex align-items-start gap-2">
+                        ${!n.is_read ? '<span class="mt-1 flex-shrink-0" style="width:8px;height:8px;border-radius:50%;background:#4f46e5;display:inline-block;"></span>' : '<span style="width:8px;display:inline-block;"></span>'}
+                        <div>
+                            <div class="small fw-semibold">${n.message}</div>
+                            <div class="text-muted" style="font-size:0.75rem;">${n.created_at}</div>
+                        </div>
+                    </div>
                 </a>
             `).join('');
+
+            // Attach click handler to mark as read before navigating
+            document.querySelectorAll('.notif-item').forEach(item => {
+                item.addEventListener('click', function (e) {
+                    const id   = this.dataset.id;
+                    const read = this.dataset.read === 'true';
+                    if (!read) {
+                        e.preventDefault();
+                        const url = this.href;
+                        fetch(`/notifications/${id}/read`, {
+                            method: 'POST',
+                            headers: {
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                                'X-Requested-With': 'XMLHttpRequest',
+                            }
+                        }).finally(() => {
+                            updateNotifBadge();
+                            window.location.href = url;
+                        });
+                    }
+                });
+            });
         });
 }
+
+function updateNotifBadge() {
+    fetch('{{ route("notifications.unread-count") }}', {
+        headers: { 'X-Requested-With': 'XMLHttpRequest' }
+    })
+    .then(r => r.json())
+    .then(data => {
+        let badge = document.getElementById('notif-badge');
+        if (data.count > 0) {
+            if (!badge) {
+                // Create badge if it doesn't exist yet
+                badge = document.createElement('span');
+                badge.id = 'notif-badge';
+                badge.className = 'position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger';
+                document.querySelector('.fa-bell')?.closest('button')?.appendChild(badge);
+            }
+            badge.textContent = data.count;
+            badge.style.display = '';
+        } else {
+            if (badge) badge.style.display = 'none';
+        }
+    })
+    .catch(() => {});
+}
+
+// Poll every 30 seconds to keep badge in sync
+setInterval(updateNotifBadge, 30000);
 </script>
 
 @stack('scripts')

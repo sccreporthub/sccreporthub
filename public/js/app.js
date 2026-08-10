@@ -118,27 +118,4 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     });
-
-    // ─── Notification Polling (every 30s) ─────────────────────────────────────
-    function updateNotifBadge() {
-        fetch('/notifications/unread-count', {
-            headers: { 'X-Requested-With': 'XMLHttpRequest' }
-        })
-        .then(r => r.json())
-        .then(data => {
-            const badge = document.getElementById('notif-badge');
-            if (badge) {
-                if (data.count > 0) {
-                    badge.textContent = data.count;
-                    badge.style.display = '';
-                } else {
-                    badge.style.display = 'none';
-                }
-            }
-        })
-        .catch(() => {}); // Silently fail
-    }
-
-    // Poll every 30 seconds
-    setInterval(updateNotifBadge, 30000);
 });
