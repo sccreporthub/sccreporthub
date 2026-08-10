@@ -138,4 +138,9 @@ class Ticket extends Model
     {
         return $this->hasMany(MaintenanceLog::class);
     }
+
+    public function feedback()
+    {
+        return $this->hasOne(Feedback::class);
+    }
 }

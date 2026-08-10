@@ -148,7 +148,7 @@
 
     <!-- Right: Actions -->
     <div class="col-md-4">
-        <div class="card shadow-sm">
+        <div class="card shadow-sm mb-4">
             <div class="card-header bg-white fw-semibold"><i class="fas fa-info-circle me-2 text-primary"></i>Ticket Summary</div>
             <div class="card-body">
                 <div class="mb-2">
@@ -175,6 +175,40 @@
                 @endif
             </div>
         </div>
+
+        {{-- Feedback Section --}}
+        @if($ticket->status === Ticket::STATUS_COMPLETED)
+            @if($ticket->feedback)
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-white fw-semibold">
+                    <i class="fas fa-star me-2 text-warning"></i>Your Feedback
+                </div>
+                <div class="card-body">
+                    <div class="d-flex gap-1 mb-2">
+                        @for($i = 1; $i <= 5; $i++)
+                            <i class="fas fa-star {{ $i <= $ticket->feedback->rating ? 'text-warning' : 'text-muted' }}" style="font-size:1.1rem;"></i>
+                        @endfor
+                        <span class="ms-2 fw-semibold text-muted small">{{ $ticket->feedback->rating }}/5</span>
+                    </div>
+                    @if($ticket->feedback->comment)
+                    <p class="text-muted small mb-0 fst-italic">"{{ $ticket->feedback->comment }}"</p>
+                    @endif
+                    <div class="text-muted" style="font-size:0.72rem;">Submitted {{ $ticket->feedback->created_at->format('M d, Y') }}</div>
+                </div>
+            </div>
+            @else
+            <div class="card shadow-sm border-warning border-2">
+                <div class="card-body text-center p-4">
+                    <i class="fas fa-star fa-2x text-warning mb-2"></i>
+                    <h6 class="fw-semibold mb-1">How was the service?</h6>
+                    <p class="text-muted small mb-3">Your repair is complete. Rate the maintenance service to help us improve.</p>
+                    <a href="{{ route('faculty.feedback.create', $ticket) }}" class="btn btn-warning w-100 fw-semibold">
+                        <i class="fas fa-star me-2"></i>Submit Feedback
+                    </a>
+                </div>
+            </div>
+            @endif
+        @endif
     </div>
 </div>
 @endsection

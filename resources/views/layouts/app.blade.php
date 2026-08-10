@@ -68,6 +68,9 @@
                 <li class="nav-item {{ request()->routeIs('admin.facilities.*') ? 'active' : '' }}">
                     <a href="{{ route('admin.facilities.index') }}"><i class="fas fa-building"></i> Facility Management</a>
                 </li>
+                <li class="nav-item {{ request()->routeIs('admin.feedback') ? 'active' : '' }}">
+                    <a href="{{ route('admin.feedback') }}"><i class="fas fa-star"></i> Feedback</a>
+                </li>
 
                 <li class="nav-divider"></li>
 

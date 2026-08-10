@@ -19,7 +19,7 @@ class TicketController extends Controller
     {
         $tickets = Ticket::where('user_id', Auth::id())
             ->whereIn('status', ['completed', 'rejected'])
-            ->with(['facility', 'assignedStaff'])
+            ->with(['facility', 'assignedStaff', 'feedback'])
             ->latest()
             ->paginate(10);
 
@@ -154,7 +154,7 @@ class TicketController extends Controller
             abort(403);
         }
 
-        $ticket->load(['user', 'facility', 'assignedStaff', 'maintenanceLogs.maintenanceStaff']);
+        $ticket->load(['user', 'facility', 'assignedStaff', 'maintenanceLogs.maintenanceStaff', 'feedback']);
 
         return view('faculty.tickets.show', compact('ticket'));
     }
