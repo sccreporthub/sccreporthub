@@ -22,6 +22,12 @@ class NotificationController extends Controller
             ->where('is_read', false)
             ->update(['is_read' => true]);
 
+        // Attach URL to each notification
+        $notifications->getCollection()->transform(function ($n) {
+            $n->url = $this->resolveNotificationUrl($n);
+            return $n;
+        });
+
         return view('notifications.index', compact('notifications'));
     }
 

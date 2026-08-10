@@ -15,7 +15,7 @@
 <div class="card shadow-sm">
     <div class="card-body p-0">
         @forelse($notifications as $notif)
-        <div class="d-flex align-items-start p-3 border-bottom {{ !$notif->is_read ? 'bg-light' : '' }}">
+        <a href="{{ $notif->url }}" class="d-flex align-items-start p-3 border-bottom text-decoration-none text-dark notif-row {{ !$notif->is_read ? 'bg-light' : '' }}" style="transition: background 0.15s;">
             <div class="me-3 mt-1">
                 @php
                     $icon = match($notif->type) {
@@ -37,9 +37,9 @@
                 <div class="text-muted" style="font-size:0.75rem;">{{ $notif->created_at->diffForHumans() }} — {{ $notif->created_at->format('M d, Y h:i A') }}</div>
             </div>
             @if(!$notif->is_read)
-            <span class="badge bg-primary rounded-pill ms-2">New</span>
+            <span class="badge bg-primary rounded-pill ms-2 align-self-center">New</span>
             @endif
-        </div>
+        </a>
         @empty
         <div class="text-center text-muted py-5">
             <i class="fas fa-bell-slash fa-3x mb-3"></i>
@@ -52,3 +52,11 @@
     @endif
 </div>
 @endsection
+
+@push('styles')
+<style>
+.notif-row:hover {
+    background-color: #f0f4ff !important;
+}
+</style>
+@endpush
