@@ -201,8 +201,11 @@ class AdminController extends Controller
             ->whereIn('status', ['assigned', 'ongoing', 'resolved']);
 
         if ($request->filled('status')) {
-            $query->where('status', $request->status);
+            // Support comma-separated statuses e.g. ?status=assigned,ongoing
+            $statuses = explode(',', $request->status);
+            $query->whereIn('status', $statuses);
         }
+
         if ($request->filled('search')) {
             $search = $request->search;
             $query->where(function ($q) use ($search) {

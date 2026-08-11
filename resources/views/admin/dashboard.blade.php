@@ -35,7 +35,7 @@
         </a>
     </div>
     <div class="col-6 col-md-3">
-        <a href="{{ route('admin.monitoring.index') }}" class="text-decoration-none">
+        <a href="{{ route('admin.monitoring.index') }}?status=assigned,ongoing" class="text-decoration-none">
             <div class="stat-card stat-info" style="cursor:pointer;">
                 <div class="stat-icon"><i class="fas fa-tools"></i></div>
                 <div class="stat-info">
