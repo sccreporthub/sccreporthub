@@ -61,7 +61,7 @@ class TicketController extends Controller
             'description'    => ['required', 'string', 'min:10'],
             'issue_category' => ['required', 'in:' . implode(',', array_keys(Ticket::CATEGORIES))],
             'location_id'    => ['nullable', 'exists:facilities,id'],
-            'contact_number' => ['nullable', 'string', 'max:20'],
+            'contact_number' => ['required', 'string', 'max:20'],
             'photo'          => ['nullable', 'image', 'max:10240'],
         ]);
 

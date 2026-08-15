@@ -54,16 +54,16 @@
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label fw-semibold">Contact Number <span class="text-muted fw-normal small">(optional — for follow-up)</span></label>
+                        <label class="form-label fw-semibold">Contact Number <span class="text-danger">*</span></label>
                         <div class="input-group">
                             <span class="input-group-text"><i class="fas fa-phone text-muted"></i></span>
                             <input type="text" name="contact_number"
                                    class="form-control @error('contact_number') is-invalid @enderror"
                                    value="{{ old('contact_number') }}"
-                                   placeholder="09XXXXXXXXX">
+                                   placeholder="09XXXXXXXXX" required>
                         </div>
                         @error('contact_number')<div class="invalid-feedback d-block">{{ $message }}</div>@enderror
-                        <div class="form-text">Provide a number where admin or maintenance can reach you for clarifications.</div>
+                        <div class="form-text">For admin or maintenance to reach you for clarifications.</div>
                     </div>
 
                     <div class="mb-3">
