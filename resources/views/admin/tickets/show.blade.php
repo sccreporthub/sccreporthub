@@ -78,6 +78,9 @@
                         <label class="text-muted small">Submitted By</label>
                         <div>{{ $ticket->user->full_name }}</div>
                         <div class="text-muted small">{{ $ticket->user->department }}</div>
+                        <div class="text-muted small">
+                            <i class="fas fa-phone me-1"></i>{{ $ticket->user->contact_number ?? 'N/A' }}
+                        </div>
                     </div>
                     @if($ticket->approved_at)
                     <div class="col-md-6">

@@ -57,7 +57,9 @@
                     <div class="col-md-6">
                         <div class="text-muted small">Reported By</div>
                         <div>{{ $ticket->user->full_name }}</div>
-                        <div class="text-muted small">{{ $ticket->user->contact_number }}</div>
+                        <div class="text-muted small">
+                            <i class="fas fa-phone me-1"></i>{{ $ticket->user->contact_number ?? 'N/A' }}
+                        </div>
                     </div>
                 </div>
 
