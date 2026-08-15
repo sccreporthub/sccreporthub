@@ -52,6 +52,24 @@
             font-size: 8.5pt;
             line-height: 1.3;
         }
+        .header .ticket-ref-box {
+            text-align: right;
+            font-size: 8pt;
+            border: 1px solid #000;
+            padding: 4px 7px;
+            border-radius: 3px;
+        }
+        .header .ticket-ref-box .ref-label {
+            font-size: 7pt;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #555;
+        }
+        .header .ticket-ref-box .ref-value {
+            font-size: 9.5pt;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+        }
 
         /* ── Form Title ── */
         .form-title {
@@ -238,6 +256,10 @@
             <div class="school-sub">United Church of Christ in the Philippines</div>
             <div class="school-sub">Midsayap, 9410 Cotabato</div>
             <div class="school-sub">Tel No. (064) 577-0184</div>
+        </div>
+        <div class="ticket-ref-box">
+            <div class="ref-label">Ticket No.</div>
+            <div class="ref-value">{{ $ticket->ticket_number }}</div>
         </div>
     </div>
 
