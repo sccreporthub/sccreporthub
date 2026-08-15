@@ -54,13 +54,6 @@
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label fw-semibold">Detailed Description <span class="text-danger">*</span></label>
-                        <textarea name="description" class="form-control @error('description') is-invalid @enderror"
-                                  rows="4" placeholder="Describe the issue in detail..." required>{{ old('description') }}</textarea>
-                        @error('description')<div class="invalid-feedback">{{ $message }}</div>@enderror
-                    </div>
-
-                    <div class="mb-3">
                         <label class="form-label fw-semibold">Contact Number <span class="text-muted fw-normal small">(optional — for follow-up)</span></label>
                         <div class="input-group">
                             <span class="input-group-text"><i class="fas fa-phone text-muted"></i></span>
@@ -71,6 +64,13 @@
                         </div>
                         @error('contact_number')<div class="invalid-feedback d-block">{{ $message }}</div>@enderror
                         <div class="form-text">Provide a number where admin or maintenance can reach you for clarifications.</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Detailed Description <span class="text-danger">*</span></label>
+                        <textarea name="description" class="form-control @error('description') is-invalid @enderror"
+                                  rows="4" placeholder="Describe the issue in detail..." required>{{ old('description') }}</textarea>
+                        @error('description')<div class="invalid-feedback">{{ $message }}</div>@enderror
                     </div>
 
                     <div class="mb-4">
