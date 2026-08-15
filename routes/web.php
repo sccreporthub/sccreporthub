@@ -123,6 +123,7 @@ Route::middleware(['auth', 'faculty'])->prefix('faculty')->name('faculty.')->gro
         Route::post('/',        [TicketController::class, 'store'])->name('store');
         Route::get('/track',    [TicketController::class, 'track'])->name('track');
         Route::get('/{ticket}', [TicketController::class, 'show'])->name('show');
+        Route::get('/{ticket}/job-request', [TicketController::class, 'jobRequestForm'])->name('job-request');
     });
 
     Route::get('/history', [TicketController::class, 'history'])->name('history');

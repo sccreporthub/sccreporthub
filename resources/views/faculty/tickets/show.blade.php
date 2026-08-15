@@ -18,12 +18,15 @@
             </ol>
         </nav>
     </div>
-    <a href="{{ request('from') === 'history' ? route('faculty.history') : route('faculty.tickets.index') }}" class="btn btn-outline-secondary">
-        <i class="fas fa-arrow-left me-1"></i>Back
-    </a>
+    <div class="d-flex gap-2">
+        <a href="{{ route('faculty.tickets.job-request', $ticket) }}" target="_blank" class="btn btn-outline-primary">
+            <i class="fas fa-print me-1"></i>Print Job Request Form
+        </a>
+        <a href="{{ request('from') === 'history' ? route('faculty.history') : route('faculty.tickets.index') }}" class="btn btn-outline-secondary">
+            <i class="fas fa-arrow-left me-1"></i>Back
+        </a>
+    </div>
 </div>
-
-<div class="row g-4">
     <div class="col-md-8">
         <!-- Ticket Info -->
         <div class="card shadow-sm mb-4">
@@ -211,4 +214,49 @@
         @endif
     </div>
 </div>
+
+{{-- Job Request Form Popup — shown after fresh ticket submission --}}
+@if(session('show_job_request'))
+<div class="modal fade" id="jobRequestModal" tabindex="-1" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header border-0 pb-0">
+                <h5 class="modal-title fw-bold">
+                    <i class="fas fa-print me-2 text-primary"></i>Print Job Request Form
+                </h5>
+            </div>
+            <div class="modal-body text-center py-4">
+                <div class="mb-3">
+                    <i class="fas fa-file-alt fa-4x text-primary opacity-75"></i>
+                </div>
+                <p class="fw-semibold mb-1">Your ticket has been submitted successfully!</p>
+                <p class="text-muted small mb-0">
+                    Please print the <strong>Job Request Form</strong> and have it signed by your
+                    <strong>Head of Unit/Activity In-charge</strong> and submitted to the
+                    <strong>Building &amp; Grounds Supervisor</strong> for processing.
+                </p>
+            </div>
+            <div class="modal-footer border-0 d-flex gap-2 justify-content-center pt-0 pb-4">
+                <a href="{{ route('faculty.tickets.job-request', $ticket) }}" target="_blank"
+                   class="btn btn-primary px-4">
+                    <i class="fas fa-print me-2"></i>Print Now
+                </a>
+                <button type="button" class="btn btn-outline-secondary px-4" data-bs-dismiss="modal">
+                    Print Later
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@push('scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var modal = new bootstrap.Modal(document.getElementById('jobRequestModal'));
+        modal.show();
+    });
+</script>
+@endpush
+@endif
+
 @endsection

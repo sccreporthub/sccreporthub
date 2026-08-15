@@ -95,7 +95,8 @@ class TicketController extends Controller
         $this->notifyAdmins($ticket);
 
         return redirect()->route('faculty.tickets.show', $ticket)
-            ->with('success', "Ticket #{$ticket->ticket_number} submitted successfully. Awaiting admin review.");
+            ->with('success', "Ticket #{$ticket->ticket_number} submitted successfully. Awaiting admin review.")
+            ->with('show_job_request', true);
     }
 
     // ─── Helper: Detect priority based on same category + location ───────────
@@ -150,6 +151,16 @@ class TicketController extends Controller
                     $t->update(['priority_level' => $newPriority]);
                 }
             });
+    }
+
+    // ─── Faculty: Job Request Form (Printable) ───────────────────────────────
+
+    public function jobRequestForm(Ticket $ticket)
+    {
+        if (Auth::user()->isFaculty() && $ticket->user_id !== Auth::id()) {
+            abort(403);
+        }
+        return view('faculty.tickets.job-request-form', compact('ticket'));
     }
 
     // ─── Faculty: Show Ticket Details ─────────────────────────────────────────
