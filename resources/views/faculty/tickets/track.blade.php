@@ -18,7 +18,7 @@
                     <div class="input-group">
                         <span class="input-group-text"><i class="fas fa-ticket-alt text-muted"></i></span>
                         <input type="text" name="ticket_number" class="form-control form-control-lg @error('ticket_number') is-invalid @enderror"
-                               placeholder="e.g. TKT-20240101-ABCDE" value="{{ request('ticket_number') }}" required>
+                               placeholder="e.g. TKT-2627-ABCDE" value="{{ request('ticket_number') }}" required>
                         <button type="submit" class="btn btn-primary px-4">
                             <i class="fas fa-search me-2"></i>Track
                         </button>

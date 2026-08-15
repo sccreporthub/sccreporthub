@@ -189,8 +189,16 @@ class TicketController extends Controller
 
     private function generateTicketNumber(): string
     {
+        // Format: TKT-2627-XXXXX (2627 = short for school year 2026-2027)
+        $year  = (int) date('Y');
+        $month = (int) date('n');
+        // School year starts June — if June or later, current year to next year
+        $startYear = $month >= 6 ? $year : $year - 1;
+        $endYear   = $startYear + 1;
+        $schoolYear = substr($startYear, 2) . substr($endYear, 2); // e.g. "2627"
+
         do {
-            $number = 'TKT-' . date('Ymd') . '-' . strtoupper(Str::random(5));
+            $number = 'TKT-' . $schoolYear . '-' . strtoupper(Str::random(5));
         } while (Ticket::where('ticket_number', $number)->exists());
 
         return $number;
