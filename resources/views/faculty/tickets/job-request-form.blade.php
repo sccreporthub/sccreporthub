@@ -304,14 +304,6 @@
         </div>
     </div>
 
-    {{-- Description --}}
-    <div class="field-row">
-        <div class="field-group" style="align-items:flex-start; margin-top:2px;">
-            <span class="flabel" style="margin-top:2px;">Details/Description:</span>
-            <span class="fvalue" style="white-space:normal; line-height:1.4; border-bottom:0.8px solid #000; min-height:40px;">{{ $ticket->description }}</span>
-        </div>
-    </div>
-
     {{-- Signatures --}}
     <div class="sig-section">
         <div class="sig-intro">
