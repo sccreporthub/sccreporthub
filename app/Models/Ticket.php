@@ -36,6 +36,7 @@ class Ticket extends Model
         'location_id',
         'title',
         'description',
+        'contact_number',
         'priority_level',
         'photo_path',
         'status',
