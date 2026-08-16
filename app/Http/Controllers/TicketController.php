@@ -202,17 +202,34 @@ class TicketController extends Controller
 
     private function generateTicketNumber(): string
     {
-        // Format: TKT-2627-XXXXX (2627 = short for school year 2026-2027)
+        // School year calculation (June-based)
         $year  = (int) date('Y');
         $month = (int) date('n');
-        // School year starts June — if June or later, current year to next year
-        $startYear = $month >= 6 ? $year : $year - 1;
-        $endYear   = $startYear + 1;
+        $startYear  = $month >= 6 ? $year : $year - 1;
+        $endYear    = $startYear + 1;
         $schoolYear = substr($startYear, 2) . substr($endYear, 2); // e.g. "2627"
 
-        do {
-            $number = 'TKT-' . $schoolYear . '-' . strtoupper(Str::random(5));
-        } while (Ticket::where('ticket_number', $number)->exists());
+        // Get the latest ticket number for this school year
+        $latest = Ticket::where('ticket_number', 'like', "TKT-{$schoolYear}-%")
+            ->orderBy('id', 'desc')
+            ->value('ticket_number');
+
+        if ($latest) {
+            // Extract the sequence number and increment
+            $lastSeq = (int) substr($latest, strrpos($latest, '-') + 1);
+            $nextSeq = $lastSeq + 1;
+        } else {
+            // First ticket of the school year
+            $nextSeq = 1;
+        }
+
+        $number = 'TKT-' . $schoolYear . '-' . str_pad($nextSeq, 4, '0', STR_PAD_LEFT);
+
+        // Safety check for uniqueness
+        if (Ticket::where('ticket_number', $number)->exists()) {
+            $nextSeq++;
+            $number = 'TKT-' . $schoolYear . '-' . str_pad($nextSeq, 4, '0', STR_PAD_LEFT);
+        }
 
         return $number;
     }
