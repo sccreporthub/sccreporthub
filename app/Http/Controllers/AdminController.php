@@ -67,7 +67,25 @@ class AdminController extends Controller
         return view('admin.tickets.show', compact('ticket', 'maintenanceStaff'));
     }
 
-    // ─── Approve Ticket ───────────────────────────────────────────────────────
+    // ─── Update Priority ──────────────────────────────────────────────────────
+
+    public function updatePriority(Request $request, Ticket $ticket)
+    {
+        $request->validate([
+            'priority_level' => ['required', 'in:normal,high,urgent'],
+        ]);
+
+        $old = $ticket->priority_level;
+        $new = $request->priority_level;
+
+        if ($old === $new) {
+            return back()->with('info', 'Priority is already set to ' . ucfirst($new) . '.');
+        }
+
+        $ticket->update(['priority_level' => $new]);
+
+        return back()->with('success', "Priority updated from " . ucfirst($old) . " to " . ucfirst($new) . ".");
+    }
 
     public function approveTicket(Request $request, Ticket $ticket)
     {

@@ -73,6 +73,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
         Route::post('/{ticket}/approve',         [AdminController::class, 'approveTicket'])->name('approve');
         Route::post('/{ticket}/reject',          [AdminController::class, 'rejectTicket'])->name('reject');
         Route::post('/{ticket}/assign',          [AdminController::class, 'assignTicket'])->name('assign');
+        Route::post('/{ticket}/priority',        [AdminController::class, 'updatePriority'])->name('priority');
         Route::post('/{ticket}/verify',          [AdminController::class, 'verifyCompletion'])->name('verify');
         Route::get('/{ticket}/receipt',          [AdminController::class, 'generateReceipt'])->name('receipt');
     });

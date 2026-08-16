@@ -150,6 +150,36 @@
 
     <!-- Right Column: Actions -->
     <div class="col-md-4">
+        <!-- Priority Management -->
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-white fw-semibold">
+                <i class="fas fa-flag me-2 text-primary"></i>Priority Level
+            </div>
+            <div class="card-body">
+                <p class="text-muted small mb-3">Current priority is based on similar ticket count. Override if needed based on urgency.</p>
+                <form method="POST" action="{{ route('admin.tickets.priority', $ticket) }}">
+                    @csrf
+                    <div class="d-grid gap-2">
+                        <button type="submit" name="priority_level" value="normal"
+                            class="btn w-100 {{ $ticket->priority_level === 'normal' ? 'btn-success' : 'btn-outline-success' }}">
+                            <i class="fas fa-circle me-2"></i>Normal
+                            @if($ticket->priority_level === 'normal') <i class="fas fa-check ms-1"></i> @endif
+                        </button>
+                        <button type="submit" name="priority_level" value="high"
+                            class="btn w-100 {{ $ticket->priority_level === 'high' ? 'btn-warning' : 'btn-outline-warning' }}">
+                            <i class="fas fa-circle me-2"></i>High
+                            @if($ticket->priority_level === 'high') <i class="fas fa-check ms-1"></i> @endif
+                        </button>
+                        <button type="submit" name="priority_level" value="urgent"
+                            class="btn w-100 {{ $ticket->priority_level === 'urgent' ? 'btn-danger' : 'btn-outline-danger' }}">
+                            <i class="fas fa-circle-exclamation me-2"></i>Urgent
+                            @if($ticket->priority_level === 'urgent') <i class="fas fa-check ms-1"></i> @endif
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
         <!-- Admin Actions -->
         <div class="card shadow-sm mb-4">
             <div class="card-header bg-white fw-semibold">
